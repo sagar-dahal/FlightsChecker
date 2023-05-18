@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import json
+import os
 
 
 class QatarAirways(webdriver.Chrome):
@@ -81,5 +82,7 @@ class QatarAirways(webdriver.Chrome):
         self.flightLists = sorted(self.flightLists, key = lambda k: k['Economy'])
     
     def JSONify(self):
+        if not os.path.exists('files/'):
+            os.mkdir('files/')
         with open('files/qatar.json', 'w') as f:
             f.write(json.dumps(self.flightLists))
