@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import json
 
 
 class QatarAirways(webdriver.Chrome):
@@ -77,8 +78,8 @@ class QatarAirways(webdriver.Chrome):
                 self.flightLists.append(flightDetails)
             except:
                 print('Some error')
-    
-    def sortFlights(self):
         self.flightLists = sorted(self.flightLists, key = lambda k: k['Economy'])
-        for f in self.flightLists:
-            print(f)
+    
+    def JSONify(self):
+        with open('files/qatar.json', 'w') as f:
+            f.write(json.dumps(self.flightLists))
