@@ -13,7 +13,7 @@ class QatarAirways(webdriver.Chrome):
         self.driver_path = driver_path
         os.environ['PATH'] += self.driver_path
         super(QatarAirways, self).__init__()
-        self.implicitly_wait(60)
+        self.implicitly_wait(30)
         self.maximize_window()
         self.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         self.url = 'https://www.qatarairways.com/en-us/homepage.html'
@@ -41,9 +41,9 @@ class QatarAirways(webdriver.Chrome):
         option = WebDriverWait(self, 10).until(EC.presence_of_element_located((By.ID, tripType)))
         option.click()
 
-    def departDate(self, date='2023-11-02'):
+    def departDate(self, date):
         month = date.split('-')[1]
-        month = int(month.lstrip('0'))
+        month = int(month.lstrip('0'))-1
         month = self.months[month]
         monthRange = self.find_element(By.XPATH, f"//a[contains(@data-month1, '{month}') or contains(@data-month2, '{month}')]")
         monthRange.click()
@@ -80,9 +80,4 @@ class QatarAirways(webdriver.Chrome):
             except:
                 print('Some error')
         self.flightLists = sorted(self.flightLists, key = lambda k: k['Economy'])
-    
-    def JSONify(self):
-        if not os.path.exists('files/'):
-            os.mkdir('files/')
-        with open('files/qatar.json', 'w') as f:
-            f.write(json.dumps(self.flightLists))
+        return self.flightLists
